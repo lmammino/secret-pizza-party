@@ -64,3 +64,9 @@
 .fieldset input {
   font-size: 1em;
 }
+
+.error {
+  text-align: center;
+  font-size: 2em;
+  color: #5f0404;
+}
