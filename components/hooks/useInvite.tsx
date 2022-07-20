@@ -21,7 +21,6 @@ export default function useInvite (): [Invite | null, string | null] {
       try {
         await delay(2000)
         const invite = {
-          // b0cbb4a4-8a31-4bc1-bee9-d6fe39c1a6b3	Donatello	purple	Bo
           code: 'ce7d5886-2166-4aee-8038-548f68b9739d',
           name: 'Donatello',
           color: 'purple',
