@@ -1,15 +1,19 @@
 import { useState, useEffect } from 'react'
+import { Invite } from '../../types/invite'
 
-function delay (ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
+const API_BASE = process.env.API_ENDPOINT || (typeof window !== 'undefined' && (window.location.origin + '/api'))
+const INVITE_ENDPOINT = API_BASE + '/invite'
 
-interface Invite {
-  code: string,
-  name: string,
-  color: string,
-  weapon: string,
-  coming?: boolean,
+async function fetchInvite (code: string): Promise<Invite> {
+  const requestUrl = new URL(INVITE_ENDPOINT)
+  requestUrl.searchParams.append('code', code)
+  const response = await fetch(requestUrl)
+  if (!response.ok) {
+    throw new Error(response.statusText)
+  }
+  const invite = await response.json()
+
+  return invite
 }
 
 export default function useInvite (): [Invite | null, string | null] {
@@ -17,21 +21,16 @@ export default function useInvite (): [Invite | null, string | null] {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const init = async () => {
-      try {
-        await delay(2000)
-        const invite = {
-          code: 'ce7d5886-2166-4aee-8038-548f68b9739d',
-          name: 'Donatello',
-          color: 'purple',
-          weapon: 'Bo'
-        }
-        setInvite(invite)
-      } catch (error) {
-        setError((error as Error).message)
-      }
+    const url = new URL(window.location.toString())
+    const code = url.searchParams.get('code')
+
+    if (!code) {
+      setError('No code provided')
+    } else {
+      fetchInvite(code)
+        .then(setInvite)
+        .catch((err) => setError(err.message))
     }
-    init()
   }, [])
 
   return [invite, error]

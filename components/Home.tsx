@@ -24,7 +24,7 @@ export default function Home () {
       <h1 className={styles.title}>Secret Pizza Party!</h1>
       <h2 className={styles.subtitle}>Dec 31st 2022 - 122 and 1/8th, New York City</h2>
 
-      <div className={styles.card} style={{ borderColor: invite.color }}>
+      <div className={styles.card} style={{ borderColor: invite.favouriteColor }}>
         <h3>Hello, <strong>{invite.name}</strong>!</h3>
         <p>You have been invited to the most awesome secret pizza party of the year!</p>
         <fieldset className={styles.fieldset} onChange={(e) => console.log((e.target as HTMLInputElement).value, invite.code)}>
