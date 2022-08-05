@@ -29,7 +29,10 @@ export default function useInvite (): [Invite | null, string | null] {
     } else {
       fetchInvite(code)
         .then(setInvite)
-        .catch((err) => setError(err.message))
+        .catch((err) => {
+          console.error(err)
+          setError(err.message)
+        })
     }
   }, [])
 
