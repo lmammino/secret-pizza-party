@@ -9,10 +9,9 @@ async function fetchInvite (code: string): Promise<Invite> {
   requestUrl.searchParams.append('code', code)
   const response = await fetch(requestUrl)
   if (!response.ok) {
-    throw new Error(response.statusText)
+    throw new Error('Invalid code')
   }
   const invite = await response.json()
-
   return invite
 }
 
