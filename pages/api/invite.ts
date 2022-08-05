@@ -1,10 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Invite } from '../../types/invite'
+import { InviteResponse } from '../../types/invite'
 import { getInvite } from '../../utils/airtable'
+import messages from '../../data/messages'
 
 export default async function handler (
   req: NextApiRequest,
-  res: NextApiResponse<Invite | { error: string }>
+  res: NextApiResponse<InviteResponse | { error: string }>
 ) {
   if (!req.query.code) {
     return res.status(400).json({ error: 'Missing invite code' })
@@ -12,8 +13,8 @@ export default async function handler (
 
   const code = Array.isArray(req.query.code) ? req.query.code[0] : req.query.code
   try {
-    const data = await getInvite(code)
-    res.status(200).json(data)
+    const invite = await getInvite(code)
+    res.status(200).json({ invite, messages })
   } catch (err) {
     const e = (err as Error)
     res.status(e.message === 'Invite not found' ? 401 : 500).json({ error: e.message })

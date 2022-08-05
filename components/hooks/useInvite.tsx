@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import { Invite } from '../../types/invite'
+import { InviteResponse } from '../../types/invite'
 
 const API_BASE = process.env.API_ENDPOINT || (typeof window !== 'undefined' && (window.location.origin + '/api'))
 const INVITE_ENDPOINT = API_BASE + '/invite'
 
-async function fetchInvite (code: string): Promise<Invite> {
+async function fetchInvite (code: string): Promise<InviteResponse> {
   const requestUrl = new URL(INVITE_ENDPOINT)
   requestUrl.searchParams.append('code', code)
   const response = await fetch(requestUrl)
@@ -15,8 +15,8 @@ async function fetchInvite (code: string): Promise<Invite> {
   return invite
 }
 
-export default function useInvite (): [Invite | null, string | null] {
-  const [invite, setInvite] = useState<Invite | null>(null)
+export default function useInvite (): [InviteResponse | null, string | null] {
+  const [invite, setInvite] = useState<InviteResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -29,7 +29,6 @@ export default function useInvite (): [Invite | null, string | null] {
       fetchInvite(code)
         .then(setInvite)
         .catch((err) => {
-          console.error(err)
           setError(err.message)
         })
     }
