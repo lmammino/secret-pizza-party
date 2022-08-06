@@ -16,11 +16,14 @@ const base = airtable.base(process.env.AIRTABLE_BASE_ID)
 
 // get an invite by invite code (promisified)
 export function getInvite (inviteCode: string): Promise<Invite> {
+  const formula = `{invite} = '${inviteCode}'`
+  console.log(`Getting invite with formula: ${formula}`)
+
   return new Promise((resolve, reject) => {
     base('invites')
       // runs a query on the `invites` table
       .select({
-        filterByFormula: `{invite} = '${inviteCode}'`,
+        filterByFormula: formula,
         maxRecords: 1
       })
       // reads the first page of results
