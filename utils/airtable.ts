@@ -20,7 +20,7 @@ export function getInvite (inviteCode: string): Promise<Invite> {
     base('invites')
       // runs a query on the `invites` table
       .select({
-        filterByFormula: `{invite} = ${inviteCode}`,
+        filterByFormula: `{invite} = '${inviteCode}'`,
         maxRecords: 1
       })
       // reads the first page of results
