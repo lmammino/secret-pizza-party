@@ -14,41 +14,13 @@ if (!process.env.AIRTABLE_BASE_ID) {
 const airtable = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY })
 const base = airtable.base(process.env.AIRTABLE_BASE_ID)
 
-// function used to "sanitize" query data and avoid injections
-function escape (value: string): string {
-  if (value === null || typeof value === 'undefined') {
-    return 'BLANK()'
-  }
-
-  if (typeof value === 'string') {
-    const escapedString = value
-      .replace(/"/g, '\\"')
-      .replace(/'/g, "\\'")
-      .replace(/\r/g, '')
-      .replace(/\\/g, '\\\\')
-      .replace(/\n/g, '\\n')
-      .replace(/\t/g, '\\t')
-    return `"${escapedString}"`
-  }
-
-  if (typeof value === 'number') {
-    return String(value)
-  }
-
-  if (typeof value === 'boolean') {
-    return value ? '1' : '0'
-  }
-
-  throw Error('Invalid value received')
-}
-
 // get an invite by invite code (promisified)
 export function getInvite (inviteCode: string): Promise<Invite> {
   return new Promise((resolve, reject) => {
     base('invites')
       // runs a query on the `invites` table
       .select({
-        filterByFormula: `{invite} = ${escape(inviteCode)}`,
+        filterByFormula: `{invite} = ${inviteCode}`,
         maxRecords: 1
       })
       // reads the first page of results
