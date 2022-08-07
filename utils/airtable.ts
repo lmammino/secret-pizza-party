@@ -1,4 +1,4 @@
-import Airtable from 'airtable'
+import Airtable, { FieldSet, Record } from 'airtable'
 import { Invite } from '../types/invite'
 
 // make sure all the necessary env vars are set
@@ -41,8 +41,7 @@ function escape (value: string): string {
   throw Error('Invalid value received')
 }
 
-// get an invite by invite code (promisified)
-export function getInvite (inviteCode: string): Promise<Invite> {
+export function getInviteRecord (inviteCode: string): Promise<Record<FieldSet>> {
   return new Promise((resolve, reject) => {
     base('invites')
       // runs a query on the `invites` table
@@ -64,16 +63,40 @@ export function getInvite (inviteCode: string): Promise<Invite> {
           return reject(new Error('Invite not found'))
         }
 
-        // otherwise we create an invite object from the first record
-        // (there should be only one with the give code) and return it
-        const result = {
-          code: String(records[0].fields.invite),
-          name: String(records[0].fields.name),
-          favouriteColor: String(records[0].fields.favouriteColor),
-          weapon: String(records[0].fields.weapon)
-        }
-
-        resolve(result)
+        resolve(records[0])
       })
+  })
+}
+
+// get an invite by invite code (promisified)
+export async function getInvite (inviteCode: string): Promise<Invite> {
+  const inviteRecord = await getInviteRecord(inviteCode)
+
+  // otherwise we create an invite object from the first record
+  // (there should be only one with the give code) and return it
+  const result = {
+    code: String(inviteRecord.fields.invite),
+    name: String(inviteRecord.fields.name),
+    favouriteColor: String(inviteRecord.fields.favouriteColor),
+    weapon: String(inviteRecord.fields.weapon),
+    coming: typeof inviteRecord.fields.coming === 'undefined'
+      ? undefined
+      : inviteRecord.fields.coming === 'yes'
+  }
+
+  return result
+}
+
+export async function updateRsvp (inviteCode: string, rsvp: boolean): Promise<void> {
+  const { id } = await getInviteRecord(inviteCode)
+
+  return new Promise((resolve, reject) => {
+    base('invites').update(id, { coming: rsvp ? 'yes' : 'no' }, (err) => {
+      if (err) {
+        return reject(err)
+      }
+
+      resolve()
+    })
   })
 }

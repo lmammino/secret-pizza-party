@@ -18,7 +18,7 @@ const HomePage: NextPage = () => {
       </main>
       <footer className={styles.footer}>
         <p>
-          A sample project by Luciano Mammino (<a target="_blank" rel="noopener noreferrer" href="https://twitter.com/loige">@loige</a>)
+          A sample project by <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/loige">@loige</a>
         </p>
       </footer>
     </div>
