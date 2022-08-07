@@ -22,13 +22,12 @@ function escape (value: string): string {
 
   if (typeof value === 'string') {
     const escapedString = value
-      .replace(/"/g, '\\"')
       .replace(/'/g, "\\'")
       .replace(/\r/g, '')
       .replace(/\\/g, '\\\\')
       .replace(/\n/g, '\\n')
       .replace(/\t/g, '\\t')
-    return `"${escapedString}"`
+    return `'${escapedString}'`
   }
 
   if (typeof value === 'number') {
