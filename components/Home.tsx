@@ -37,12 +37,12 @@ export default function Home () {
 
           <label htmlFor="yes">
             <input type="radio" id="yes" name="coming" value="yes" onChange={onRsvpChange} checked={inviteResponse.invite.coming === true}/>
-            Cowabunga! (yes)
+            {inviteResponse.messages.answer1}
           </label>
 
           <label htmlFor="no">
             <input type="radio" id="no" name="coming" value="no" onChange={onRsvpChange} checked={inviteResponse.invite.coming === false}/>
-            Nitwits! (no)
+            {inviteResponse.messages.answer2}
           </label>
         </fieldset>
         <p>

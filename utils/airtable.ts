@@ -63,6 +63,7 @@ export function getInviteRecord (inviteCode: string): Promise<Record<FieldSet>> 
           return reject(new Error('Invite not found'))
         }
 
+        // returns the first record
         resolve(records[0])
       })
   })
@@ -72,9 +73,7 @@ export function getInviteRecord (inviteCode: string): Promise<Record<FieldSet>> 
 export async function getInvite (inviteCode: string): Promise<Invite> {
   const inviteRecord = await getInviteRecord(inviteCode)
 
-  // otherwise we create an invite object from the first record
-  // (there should be only one with the give code) and return it
-  const result = {
+  return {
     code: String(inviteRecord.fields.invite),
     name: String(inviteRecord.fields.name),
     favouriteColor: String(inviteRecord.fields.favouriteColor),
@@ -83,11 +82,10 @@ export async function getInvite (inviteCode: string): Promise<Invite> {
       ? undefined
       : inviteRecord.fields.coming === 'yes'
   }
-
-  return result
 }
 
 export async function updateRsvp (inviteCode: string, rsvp: boolean): Promise<void> {
+  // Gets the raw Airtable id of the record to update
   const { id } = await getInviteRecord(inviteCode)
 
   return new Promise((resolve, reject) => {

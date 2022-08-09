@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
 import { InviteResponse } from '../../types/invite'
-import { INVITE_ENDPOINT, RSVP_ENDPOINT } from '../endpoints'
+
+// Defines the endpoint based on the current window location
+const API_BASE = process.env.API_ENDPOINT || (typeof window !== 'undefined' && (window.location.origin + '/api'))
+const INVITE_ENDPOINT = API_BASE + '/invite'
+const RSVP_ENDPOINT = API_BASE + '/rsvp'
 
 interface HookResult {
   inviteResponse: InviteResponse | null,
@@ -69,7 +73,12 @@ export default function useInvite (): HookResult {
     if (inviteResponse) {
       setUpdating(true)
       await updateRsvpRequest(inviteResponse.invite.code, coming)
-      setInviteResponse({ ...inviteResponse, invite: { ...inviteResponse.invite, coming } })
+      // updates the current invite response, by cloning the original
+      // object and updating the `coming` property.
+      setInviteResponse({
+        ...inviteResponse,
+        invite: { ...inviteResponse.invite, coming }
+      })
       setUpdating(false)
     }
   }
