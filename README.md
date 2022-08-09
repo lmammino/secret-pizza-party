@@ -1,6 +1,17 @@
 # secret-pizza-party
 
-A sample Next.js website to showcase how you can make invite-only SPAs with Next.js, AirTable &amp; Vercel
+A sample Next.js website to showcase how you can make invite-only SPAs with Next.js, AirTable &amp; Vercel.
+
+The code here is illustrated in [a blog article](https://loige.co/invite-only-microsites-with-nextjs-and-airtable/) on [my personal blog](https://loige.co/)
+
+![Invite-only microsites with Next.js and AirTable article preview](https://loige.co/static/a86aea86f43d71abeca0f9afc7f44afd/invite-only-microsites-with-nextjs-and-airtable-fb.png)
+
+
+You can see this application live at [secret-pizza-party.vercel.app](https://secret-pizza-party.vercel.app/), but you'll need to read the article to find out a valid Invite code to access it! 😜
+
+
+---
+
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
